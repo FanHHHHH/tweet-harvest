@@ -25,6 +25,7 @@
     "fastify": "^4.26.2",
     "lodash": "^4.17.21",
     "minimist": "^1.2.8",
+    "mysql2": "^3.9.7",
     "papaparse": "^5.4.1",
     "playwright-extra": "^4.3.6",
     "prompts": "^2.4.2",
@@ -55,6 +56,6 @@
     "dev": "npx tsx src/dev.ts",
     "build": "tsup",
     "prepublish": "pnpm build",
-    "dev:server":"npx tsx src/server.ts"
+    "dev:server": "npx tsx src/server.ts"
   }
 }

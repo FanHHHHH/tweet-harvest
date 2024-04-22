@@ -20,10 +20,16 @@ import { CACHE_KEYS, cache } from "./cache";
 import { logError, scrollDown, scrollUp } from "./helpers/page.helper";
 import Papa from "papaparse";
 import _ from "lodash";
+import fastify from "fastify";
+import { server } from "./server";
 
 chromium.use(stealth());
 
 let headerWritten = false;
+
+function insertDb(pathStr: string, jsonData: Record<string, any>[]) {
+  // server.my
+}
 
 function appendCsv(pathStr: string, jsonData: Record<string, any>[]) {
   const fileName = path.resolve(pathStr);

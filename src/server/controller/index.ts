@@ -1,4 +1,4 @@
-import { registerCrawl } from "./craw"
+import { registerCrawl } from "./crawl"
 
 export const registerController = () => {
     registerCrawl()
