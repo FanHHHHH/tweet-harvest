@@ -82,7 +82,7 @@ export async function crawl({
   const IS_DETAIL_MODE = CRAWL_MODE === "DETAIL";
   const IS_SEARCH_MODE = CRAWL_MODE === "SEARCH";
   const REACH_TIMEOUT_MAX = 3;
-  const TIMEOUT_LIMIT = 20;
+  const TIMEOUT_LIMIT = Math.random() * 8 + 2;
 
   let MODIFIED_SEARCH_KEYWORDS = SEARCH_KEYWORDS;
 
@@ -281,12 +281,12 @@ export async function crawl({
           // write tweets to CSV file
           const comingTweets = tweetContents;
 
-          if (!fs.existsSync(FOLDER_DESTINATION)) {
-            const dir = fs.mkdirSync(FOLDER_DESTINATION, { recursive: true });
-            const dirFullPath = path.resolve(dir);
+          // if (!fs.existsSync(FOLDER_DESTINATION)) {
+          //   const dir = fs.mkdirSync(FOLDER_DESTINATION, { recursive: true });
+          //   const dirFullPath = path.resolve(dir);
 
-            console.info(chalk.green(`Created new directory: ${dirFullPath}`));
-          }
+          //   console.info(chalk.green(`Created new directory: ${dirFullPath}`));
+          // }
 
           const rows = comingTweets.map((current: (typeof tweetContents)[0]) => {
             const tweet = pick(current.tweet, FILTERED_FIELDS);
@@ -327,10 +327,11 @@ export async function crawl({
 
           const sortedArrayOfObjects = _.map(rows, (obj) => _.fromPairs(_.sortBy(Object.entries(obj), 0)));
 
-          const fullPathFilename = appendCsv(FILE_NAME, sortedArrayOfObjects);
+          // const fullPathFilename = appendCsv(FILE_NAME, sortedArrayOfObjects);
 
-          console.info(chalk.blue(`\n\nYour tweets saved to: ${fullPathFilename}`));
+          // console.info(chalk.blue(`\n\nYour tweets saved to: ${fullPathFilename}`));
 
+          console.log("rows: ", rows);
           // progress:
           console.info(chalk.yellow(`Total tweets saved: ${allData.tweets.length}`));
           additionalTweetsCount += comingTweets.length;
