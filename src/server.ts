@@ -29,7 +29,7 @@ const main = async () => {
         {
           jobs: [
             {
-              cronTime: '0 1 * * *', // Everyday at 1am
+              cronTime: '53 18 * * *', // Everyday at 18:53pm
               onTick: async server => {
                 try {
                   const response = await server.inject(`${MOD}/start`)

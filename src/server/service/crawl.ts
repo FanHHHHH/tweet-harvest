@@ -1,9 +1,14 @@
+import dayjs from "dayjs";
 import { crawl } from "../../crawl"
 import { ACCESS_TOKEN } from "../../env";
 import { logError } from "../../helpers/page.helper";
 import { pool } from "../../server";
 
 export const crawlService = async () => {
+
+
+  const now = dayjs().format("DD-MM-YYYY");
+  const lastDay = dayjs().subtract(1, "day").format("DD-MM-YYYY");
 
   const connection = await pool.getConnection()
   await crawl({
@@ -16,8 +21,8 @@ export const crawlService = async () => {
       DELAY_EVERY_100_TWEETS_SECONDS: 20,
       SEARCH_TAB: "LATEST",
       CSV_INSERT_MODE: "REPLACE",
-      SEARCH_FROM_DATE: "18-04-2024",
-      SEARCH_TO_DATE: "19-04-2024",
+      SEARCH_FROM_DATE: lastDay,
+      SEARCH_TO_DATE: now,
       retCallback: async (res) => {
 
           for (const item of res) {
