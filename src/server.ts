@@ -3,6 +3,9 @@ import Fastify from 'fastify'
 import { registerController } from './server/controller'
 import { MYSQL_DB, MYSQL_HOST, MYSQL_PASSWORD, MYSQL_PORT, MYSQL_USER } from './env'
 import { Pool, createPool } from 'mysql2/promise'
+import fastifyCron from 'fastify-cron'
+import { MOD } from './server/controller/crawl'
+
 
 // 创建 MySQL 连接池
 export const pool: Pool = createPool({
@@ -20,9 +23,29 @@ export const server = Fastify({
 
 const main = async () => {
     registerController()
+
+    server.register(
+        fastifyCron,
+        {
+          jobs: [
+            {
+              cronTime: '0 1 * * *', // Everyday at 1am
+              onTick: async server => {
+                try {
+                  const response = await server.inject(`${MOD}/start`)
+                  console.log(response.json())
+                } catch (err) { console.error(err) }
+              }
+            }
+          ]
+        }
+      )
+
     // Run the server!
     try {
         await server.listen({ port: 25154 })
+        server.cron.startAllJobs()
+       
     } catch (err) {
         server.log.error(err)
         process.exit(1)

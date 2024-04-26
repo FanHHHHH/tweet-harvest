@@ -1,5 +1,7 @@
 import { Page } from "@playwright/test";
 import chalk from "chalk";
+import path from "path";
+import fs from "fs"
 
 export const scrollUp = async (page: Page): Promise<void> => {
   await page.evaluate(() =>
@@ -33,4 +35,14 @@ export const logError = (message: string): void => {
   const appVersion = require("../../package.json").version;
   const messageWithVersion = `${chalk.gray(`[v${appVersion}]`)} ${message}`;
   console.error(messageWithVersion);
+
+  // 将错误信息写入到文本文件
+  const logFilePath = path.join(__dirname, 'error_log.txt');
+  const logMessage = `${new Date().toISOString()} ${messageWithVersion}\n`;
+
+  fs.appendFile(logFilePath, logMessage, (err) => {
+    if (err) {
+      console.error("Failed to write error log:", err);
+    }
+  });
 };
