@@ -20,16 +20,11 @@ import { CACHE_KEYS, cache } from "./cache";
 import { logError, scrollDown, scrollUp } from "./helpers/page.helper";
 import Papa from "papaparse";
 import _ from "lodash";
-import fastify from "fastify";
-import { server } from "./server";
 
 chromium.use(stealth());
 
 let headerWritten = false;
 
-function insertDb(pathStr: string, jsonData: Record<string, any>[]) {
-  // server.my
-}
 
 function appendCsv(pathStr: string, jsonData: Record<string, any>[]) {
   const fileName = path.resolve(pathStr);
@@ -65,6 +60,7 @@ export type CrawlParams = {
   TWEET_THREAD_URL?: string;
   SEARCH_TAB?: "LATEST" | "TOP";
   CSV_INSERT_MODE?: "REPLACE" | "APPEND";
+  retCallback?: (res: any) => Promise<any>;
 };
 
 export async function crawl({
@@ -81,13 +77,14 @@ export async function crawl({
   OUTPUT_FILENAME,
   SEARCH_TAB = "LATEST",
   CSV_INSERT_MODE = "REPLACE",
+  retCallback
 }: CrawlParams) {
   const CRAWL_MODE = TWEET_THREAD_URL ? "DETAIL" : "SEARCH";
   const SWITCHED_SEARCH_TAB = SEARCH_TAB === "TOP" ? "LATEST" : "TOP";
 
   const IS_DETAIL_MODE = CRAWL_MODE === "DETAIL";
   const IS_SEARCH_MODE = CRAWL_MODE === "SEARCH";
-  const REACH_TIMEOUT_MAX = 3;
+  const REACH_TIMEOUT_MAX = 1;
   const TIMEOUT_LIMIT = Math.random() * 8 + 2;
 
   let MODIFIED_SEARCH_KEYWORDS = SEARCH_KEYWORDS;
@@ -333,11 +330,12 @@ export async function crawl({
 
           const sortedArrayOfObjects = _.map(rows, (obj) => _.fromPairs(_.sortBy(Object.entries(obj), 0)));
 
+          await retCallback?.(sortedArrayOfObjects);
+
           // const fullPathFilename = appendCsv(FILE_NAME, sortedArrayOfObjects);
 
           // console.info(chalk.blue(`\n\nYour tweets saved to: ${fullPathFilename}`));
 
-          console.log("rows: ", rows);
           // progress:
           console.info(chalk.yellow(`Total tweets saved: ${allData.tweets.length}`));
           additionalTweetsCount += comingTweets.length;
