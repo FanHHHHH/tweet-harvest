@@ -1,3 +1,17 @@
+# Container run
+## build
+
+```bash
+sudo docker build -t ubuntu-tweet-harvest -f Dockerfile.ubuntu .  
+```
+
+## run
+
+
+```bash
+sudo docker run -it --restart=always --privileged=true  --name tweet-harvest -p 25154:25154 -v $(pwd):/code ubuntu-tweet-harvest /bin/bash
+```
+
 # Tweet Harvest (Twitter Crawler)
 
 Tweet Harvest is a command-line tool that uses Playwright to scrape tweets from Twitter search results based on specified keywords and date range. The scraped tweets are saved in a CSV file.

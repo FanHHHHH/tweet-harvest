@@ -7,3 +7,4 @@ output/*.csv
 dist
 bin
 tweets-data
+.pnpm-store
