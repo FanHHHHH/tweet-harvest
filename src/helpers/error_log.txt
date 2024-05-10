@@ -11,3 +11,8 @@
 2024-04-26T07:27:18.903Z [90m[v2.6.0][39m start crawl
 2024-04-26T07:50:13.782Z [90m[v2.6.0][39m No more tweets found, please check your search criteria and csv file result
 2024-04-26T07:50:31.844Z [90m[v2.6.0][39m No more tweets found, please check your search criteria and csv file result
+2024-05-10T03:35:19.421Z [90m[v2.6.0][39m TimeoutError: page.goto: Timeout 60000ms exceeded.
+Call log:
+  [2m- navigating to "https://twitter.com/search-advanced?f=live", waiting until "load"[22m
+
+2024-05-10T03:42:03.978Z [90m[v2.6.0][39m No more tweets found, please check your search criteria and csv file result

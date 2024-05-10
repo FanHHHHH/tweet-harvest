@@ -2,14 +2,14 @@
 ## build
 
 ```bash
-sudo docker build -t ubuntu-tweet-harvest -f Dockerfile.ubuntu .  
+sudo docker build -t ubuntu-tweet-harvest:1.0.0 -f Dockerfile.ubuntu .  
 ```
 
 ## run
 
 
 ```bash
-sudo docker run -it --restart=always --privileged=true  --name tweet-harvest -p 25154:25154 -v $(pwd):/code ubuntu-tweet-harvest /bin/bash
+sudo docker run -d --restart=always --privileged=true --name tweet-harvest -p 25154:25154 -v $(pwd):/code ubuntu-tweet-harvest:1.0.0 /bin/bash
 ```
 
 # Tweet Harvest (Twitter Crawler)

@@ -44,6 +44,7 @@ const main = async () => {
     // Run the server!
     try {
         await server.listen({ host: '0.0.0.0', port: 25154 })
+        // 11
         server.cron.startAllJobs()
        
     } catch (err) {

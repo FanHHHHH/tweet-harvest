@@ -1,15 +1,27 @@
 FROM ubuntu:20.04
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 WORKDIR /code
 
 COPY .  /code
 
-RUN apt-get update && apt-get install -y curl
+# 安装必要的软件包和工具
+RUN apt-get update && apt-get install -y curl git
 
-# Install Node.js
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
-RUN apt-get install -y nodejs
+# 安装 NVM
+ENV NVM_DIR /root/.nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash \
+    && . "$NVM_DIR/nvm.sh" \
+    && nvm install 18
+
+# 将 Node.js 添加到 PATH 环境变量中
+ENV PATH $NVM_DIR/versions/node/$(nvm version)/bin:$PATH
 
 # Install Playwright and its dependencies
-RUN npm i -g playwright
-RUN npx playwright install-deps
+RUN . "$NVM_DIR/nvm.sh" && nvm use 18 \
+    && npm install pnpm -g \
+    && npm i -g playwright  \
+    && npx playwright install-deps 
+
+CMD ["tail", "-f", "/dev/null"]
